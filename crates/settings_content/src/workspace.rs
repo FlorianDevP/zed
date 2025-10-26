@@ -422,6 +422,19 @@ pub struct TabBarSettingsContent {
 
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq, Eq)]
+pub struct ClockSettingsContent {
+    /// Whether to show the clock.
+    ///
+    /// Default: false
+    pub show: Option<bool>,
+    /// Whether to display hours using a 12 or 24-hour clock.
+    ///
+    /// Default: false
+    pub use_12_hour_clock: Option<bool>,
+}
+
+#[with_fallible_options]
+#[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq, Eq)]
 pub struct StatusBarSettingsContent {
     /// Whether to show the status bar.
     ///
@@ -444,6 +457,8 @@ pub struct StatusBarSettingsContent {
     ///
     /// Default: non_utf8
     pub active_encoding_button: Option<EncodingDisplayOptions>,
+    /// Settings for the clock in the status bar.
+    pub clock: Option<ClockSettingsContent>,
 }
 
 #[derive(
