@@ -1560,6 +1560,15 @@
     // Control when to show the active encoding in the status bar.
     "active_encoding_button": "non_utf8",
   },
+  // Clock related settings.
+  "clock": {
+    // Whether to show the clock.
+    "show": false,
+    // Where to display the clock.
+    "position": "status_bar",
+    // Whether to display hours using a 12 or 24-hour clock.
+    "use_12_hour_clock": false
+  },
   // Settings specific to the terminal
   "terminal": {
     // What shell to use when opening a terminal. May take 3 values:

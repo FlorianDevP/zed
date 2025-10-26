@@ -127,12 +127,6 @@ impl Settings for TabBarSettings {
     }
 }
 
-#[derive(Deserialize)]
-pub struct ClockSettings {
-    pub show: bool,
-    pub use_12_hour_clock: bool,
-}
-
 #[derive(Deserialize, RegisterSetting)]
 pub struct StatusBarSettings {
     pub show: bool,
@@ -140,23 +134,17 @@ pub struct StatusBarSettings {
     pub cursor_position_button: bool,
     pub line_endings_button: bool,
     pub active_encoding_button: EncodingDisplayOptions,
-    pub clock: ClockSettings,
 }
 
 impl Settings for StatusBarSettings {
     fn from_settings(content: &settings::SettingsContent) -> Self {
         let status_bar = content.status_bar.clone().unwrap();
-        let clock = status_bar.clock.clone().unwrap_or_default();
         StatusBarSettings {
             show: status_bar.show.unwrap(),
             active_language_button: status_bar.active_language_button.unwrap(),
             cursor_position_button: status_bar.cursor_position_button.unwrap(),
             line_endings_button: status_bar.line_endings_button.unwrap(),
             active_encoding_button: status_bar.active_encoding_button.unwrap(),
-            clock: ClockSettings {
-                show: clock.show.unwrap_or(false),
-                use_12_hour_clock: clock.use_12_hour_clock.unwrap_or(false),
-            },
         }
     }
 }

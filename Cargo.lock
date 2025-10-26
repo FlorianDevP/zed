@@ -15754,6 +15754,7 @@ dependencies = [
  "menu",
  "project",
  "rope",
+ "serde",
  "settings",
  "theme",
  "time",

@@ -420,6 +420,29 @@ pub struct TabBarSettingsContent {
     pub show_pinned_tabs_in_separate_row: Option<bool>,
 }
 
+#[derive(
+    Copy,
+    Clone,
+    PartialEq,
+    Eq,
+    Default,
+    Serialize,
+    Deserialize,
+    JsonSchema,
+    MergeFrom,
+    Debug,
+    strum::VariantArray,
+    strum::VariantNames,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ClockLocation {
+    /// Show in the TitleBar.
+    TitleBar,
+    /// Show in the StatusBar.
+    #[default]
+    StatusBar,
+}
+
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq, Eq)]
 pub struct ClockSettingsContent {
@@ -427,6 +450,10 @@ pub struct ClockSettingsContent {
     ///
     /// Default: false
     pub show: Option<bool>,
+    /// Where to display the clock.
+    ///
+    /// Default: StatusBar
+    pub position: Option<ClockLocation>,
     /// Whether to display hours using a 12 or 24-hour clock.
     ///
     /// Default: false
@@ -457,8 +484,6 @@ pub struct StatusBarSettingsContent {
     ///
     /// Default: non_utf8
     pub active_encoding_button: Option<EncodingDisplayOptions>,
-    /// Settings for the clock in the status bar.
-    pub clock: Option<ClockSettingsContent>,
 }
 
 #[derive(

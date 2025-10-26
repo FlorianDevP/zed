@@ -3629,6 +3629,56 @@ fn window_and_layout_page() -> SettingsPage {
         ]
     }
 
+    fn clockbar_section() -> [SettingsPageItem; 4] {
+        [
+            SettingsPageItem::SectionHeader("Clock"),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "Show Clock",
+                description: "Whether to show the clock.",
+                field: Box::new(SettingField {
+                    json_path: Some("clock.show"),
+                    pick: |settings_content| settings_content.clock.as_ref()?.show.as_ref(),
+                    write: |settings_content, value| {
+                        settings_content.clock.get_or_insert_default().show = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "Clock Position",
+                description: "Where to display the clock.",
+                field: Box::new(SettingField {
+                    json_path: Some("clock.position"),
+                    pick: |settings_content| settings_content.clock.as_ref()?.position.as_ref(),
+                    write: |settings_content, value| {
+                        settings_content.clock.get_or_insert_default().position = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "Use 12 hour clock",
+                description: "Whether to display hours using a 12 or 24-hour clock.",
+                field: Box::new(SettingField {
+                    json_path: Some("clock.use_12_hour_clock"),
+                    pick: |settings_content| {
+                        settings_content.clock.as_ref()?.use_12_hour_clock.as_ref()
+                    },
+                    write: |settings_content, value| {
+                        settings_content
+                            .clock
+                            .get_or_insert_default()
+                            .use_12_hour_clock = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+        ]
+    }
+
     fn tab_bar_section() -> [SettingsPageItem; 9] {
         [
             SettingsPageItem::SectionHeader("Tab Bar"),
@@ -4205,6 +4255,7 @@ fn window_and_layout_page() -> SettingsPage {
         items: concat_sections![
             status_bar_section(),
             title_bar_section(),
+            clockbar_section(),
             tab_bar_section(),
             tab_settings_section(),
             preview_tabs_section(),

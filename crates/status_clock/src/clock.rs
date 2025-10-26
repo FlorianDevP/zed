@@ -1,3 +1,6 @@
+mod clock_settings;
+
+use clock_settings::ClockSettings;
 use gpui::{App, AppContext, Entity, Styled, Subscription, Task, WeakEntity};
 use settings::Settings;
 use ui::{
@@ -5,7 +8,11 @@ use ui::{
     LabelSize, ParentElement, Render, Tooltip, Window, div,
 };
 use util::ResultExt;
-use workspace::{StatusBarSettings, StatusItemView, Workspace, item::ItemHandle};
+use workspace::{StatusItemView, Workspace, item::ItemHandle};
+
+pub fn init(cx: &mut App) {
+    ClockSettings::register(cx);
+}
 
 pub struct Clock {
     update_time: Task<()>,
@@ -38,18 +45,10 @@ impl Clock {
 
 impl Render for Clock {
     fn render(&mut self, window: &mut Window, cx: &mut Context<Self>) -> impl IntoElement {
-        let clock = &StatusBarSettings::get_global(cx).clock;
+        let clock = ClockSettings::get_global(cx);
         if !clock.show {
             return div().hidden();
         }
-
-        // struct CurrentTime(time::OffsetDateTime);
-        // cx.observe_window_activation(window, |clock, window, cx| {
-
-        // });
-        // cx.observe_global::<CurrentTime>(|clock, cx| {
-        //     let time: CurrentTime = cx.global();
-        // });
 
         let time = time::OffsetDateTime::now_local()
             .log_err()
@@ -79,6 +78,14 @@ impl Render for Clock {
             end,
         ];
         let text = time.format(&format[..]).unwrap();
+
+        // struct CurrentTime(time::OffsetDateTime);
+        // cx.observe_window_activation(window, |clock, window, cx| {
+
+        // });
+        // cx.observe_global::<CurrentTime>(|clock, cx| {
+        //     let time: CurrentTime = cx.global();
+        // });
 
         self.update_time(cx);
 
