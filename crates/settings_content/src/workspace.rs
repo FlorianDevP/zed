@@ -458,6 +458,10 @@ pub struct ClockSettingsContent {
     ///
     /// Default: false
     pub use_12_hour_clock: Option<bool>,
+    /// Offset of the clock from Utc. Example: -2:00
+    ///
+    /// Default: "" -> local system offset
+    pub offset: Option<String>,
 }
 
 #[with_fallible_options]

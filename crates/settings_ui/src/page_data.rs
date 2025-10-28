@@ -3629,7 +3629,7 @@ fn window_and_layout_page() -> SettingsPage {
         ]
     }
 
-    fn clockbar_section() -> [SettingsPageItem; 4] {
+    fn clockbar_section() -> [SettingsPageItem; 5] {
         [
             SettingsPageItem::SectionHeader("Clock"),
             SettingsPageItem::SettingItem(SettingItem {
@@ -3671,6 +3671,19 @@ fn window_and_layout_page() -> SettingsPage {
                             .clock
                             .get_or_insert_default()
                             .use_12_hour_clock = value;
+                    },
+                }),
+                metadata: None,
+                files: USER,
+            }),
+            SettingsPageItem::SettingItem(SettingItem {
+                title: "Utc offset",
+                description: "Offset of the clock from Utc. Example: -2:00",
+                field: Box::new(SettingField {
+                    json_path: Some("clock.offset"),
+                    pick: |settings_content| settings_content.clock.as_ref()?.offset.as_ref(),
+                    write: |settings_content, value| {
+                        settings_content.clock.get_or_insert_default().offset = value;
                     },
                 }),
                 metadata: None,
