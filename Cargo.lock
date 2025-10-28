@@ -17048,6 +17048,7 @@ dependencies = [
  "serde",
  "settings",
  "smallvec",
+ "status_clock",
  "story",
  "telemetry",
  "theme",
