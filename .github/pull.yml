@@ -1,0 +1,21 @@
+version: "1"
+rules:
+  - base: main
+    upstream: zed-industries:main
+    mergeMethod: hardreset # Optional, one of [none, merge, squash, rebase, hardreset], Default: none.
+  - base: dev
+    upstream: main
+    mergeMethod: rebase
+    assignees:
+      - FlorianDevP
+    conflictReviewers: # Optional, on merge conflict assign a reviewer
+      - FlorianDevP
+  - base: clock
+    upstream: dev
+    mergeMethod: rebase
+    assignees:
+      - FlorianDevP
+    conflictReviewers: # Optional, on merge conflict assign a reviewer
+      - FlorianDevP
+label: ":arrow_heading_down: pull" # Optional
+conflictLabel: "sync-conflict" # Optional, on merge conflict assign a custom label
