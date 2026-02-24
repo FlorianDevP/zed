@@ -68,6 +68,7 @@ pub(crate) struct CheckoutStep {
     fetch_depth: FetchDepth,
     name: Option<String>,
     token: Option<String>,
+    ssh_key: Option<String>,
     path: Option<String>,
     repository: Option<String>,
     ref_: Option<String>,
@@ -113,6 +114,11 @@ impl CheckoutStep {
         self.ref_ = Some(ref_.to_string());
         self
     }
+
+    pub fn with_ssh_key(mut self, ssh_key: impl ToString) -> Self {
+        self.ssh_key = Some(ssh_key.to_string());
+        self
+    }
 }
 
 impl From<CheckoutStep> for Step<Use> {
@@ -133,6 +139,10 @@ impl From<CheckoutStep> for Step<Use> {
             })
             .map(|step| match value.token {
                 Some(token) => step.add_with(("token", token)),
+                None => step,
+            })
+            .map(|step| match value.ssh_key {
+                Some(ssh_key) => step.add_with(("ssh-key", ssh_key)),
                 None => step,
             })
             .map(|step| match value.path {

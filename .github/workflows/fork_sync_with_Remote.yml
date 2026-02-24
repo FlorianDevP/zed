@@ -1,0 +1,136 @@
+# Generated from xtask::workflows::fork_sync_with_remote
+# Rebuild with `cargo xtask workflows`.
+name: fork_sync_with_remote
+run-name: sync fork with remote
+on:
+  schedule:
+  - cron: 0 0 * * *
+  workflow_dispatch: {}
+jobs:
+  check_main:
+    if: '!(github.repository_owner == ''zed-industries'' || github.repository_owner == ''zed-extensions'')'
+    runs-on: ubuntu-slim
+    permissions:
+      contents: read
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+    - name: steps::checkout_repo
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        clean: false
+        fetch-depth: ${{ github.ref == 'refs/heads/main' && 2 || 350 }}
+        ref: main
+    - name: fork_sync_with_remote::configure_git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - id: setup-upstream
+      name: fork_sync_with_remote::setup_upstream
+      run: |
+        git remote add upstream "https://github.com/zed-industries/zed.git"
+        git fetch --depth=350 upstream "main"
+    - name: fork_sync_with_remote::checkout_origin_branch
+      run: git checkout -B main origin/main
+    - id: diff-against-base
+      name: fork_sync_with_remote::check_against_base
+      run: |
+        if git diff --quiet "upstream/main"; then
+            echo "No upstream changes"
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+        else
+            git diff --shortstat "upstream/main"
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+        fi
+    outputs:
+      has_changes: ${{ steps.diff-against-base.outputs.has_changes }}
+  sync_main:
+    needs:
+    - check_main
+    if: needs.check_main.outputs.has_changes == 'true'
+    runs-on: ubuntu-slim
+    steps:
+    - name: steps::checkout_repo
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        clean: false
+        fetch-depth: ${{ github.ref == 'refs/heads/main' && 2 || 350 }}
+        ssh-key: ${{ secrets.FORK_DEPLOY_KEY }}
+        ref: main
+    - name: fork_sync_with_remote::configure_git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - id: setup-upstream
+      name: fork_sync_with_remote::setup_upstream
+      run: |
+        git remote add upstream "https://github.com/zed-industries/zed.git"
+        git fetch --depth=350 upstream "main"
+    - name: fork_sync_with_remote::hard_reset
+      run: |
+        git checkout -B main origin/main
+        git reset --hard upstream/main
+    - name: fork_sync_with_remote::force_push_if_includes
+      run: git push --force-if-includes origin main
+  sync_branch_dev:
+    needs:
+    - check_main
+    - sync_main
+    if: needs.check_main.outputs.has_changes == 'true'
+    name: sync dev
+    runs-on: ubuntu-slim
+    steps:
+    - name: steps::checkout_repo
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        clean: false
+        fetch-depth: ${{ github.ref == 'refs/heads/main' && 2 || 350 }}
+        ssh-key: ${{ secrets.FORK_DEPLOY_KEY }}
+        ref: dev
+    - name: fork_sync_with_remote::configure_git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - name: fork_sync_with_remote::rebase
+      run: |
+        git checkout -B dev origin/dev
+        git pull --rebase origin main
+    - name: fork_sync_with_remote::diff_against_base
+      run: |
+        git diff --shortstat "origin/dev"
+    - name: fork_sync_with_remote::force_push_with_lease
+      run: git push --force-with-lease origin dev
+  sync_branch_clock:
+    needs:
+    - check_main
+    - sync_main
+    if: needs.check_main.outputs.has_changes == 'true'
+    name: sync clock
+    runs-on: ubuntu-slim
+    steps:
+    - name: steps::checkout_repo
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        clean: false
+        fetch-depth: ${{ github.ref == 'refs/heads/main' && 2 || 350 }}
+        ssh-key: ${{ secrets.FORK_DEPLOY_KEY }}
+        ref: clock
+    - name: fork_sync_with_remote::configure_git
+      run: |
+        git config user.name "github-actions[bot]"
+        git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+    - name: fork_sync_with_remote::rebase
+      run: |
+        git checkout -B clock origin/clock
+        git pull --rebase origin main
+    - name: fork_sync_with_remote::diff_against_base
+      run: |
+        git diff --shortstat "origin/clock"
+    - name: fork_sync_with_remote::force_push_with_lease
+      run: git push --force-with-lease origin clock
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+defaults:
+  run:
+    shell: bash -euxo pipefail {0}

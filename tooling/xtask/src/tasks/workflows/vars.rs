@@ -51,6 +51,7 @@ secret!(SLACK_WEBHOOK_WORKFLOW_FAILURES);
 secret!(R2_ACCOUNT_ID);
 secret!(R2_ACCESS_KEY_ID);
 secret!(R2_SECRET_ACCESS_KEY);
+secret!(FORK_DEPLOY_KEY);
 
 // todo(ci) make these secrets too...
 var!(AZURE_SIGNING_ACCOUNT_NAME);
