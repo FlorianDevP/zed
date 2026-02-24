@@ -65,6 +65,7 @@ pub(crate) struct CheckoutStep {
     fetch_depth: FetchDepth,
     name: Option<String>,
     token: Option<String>,
+    ssh_key: Option<String>,
     path: Option<String>,
     repository: Option<String>,
     ref_: Option<String>,
@@ -108,6 +109,11 @@ impl CheckoutStep {
 
     pub fn with_ref(mut self, ref_: impl ToString) -> Self {
         self.ref_ = Some(ref_.to_string());
+        self
+    }
+
+    pub fn with_ssh_key(mut self, ssh_key: impl ToString) -> Self {
+        self.ssh_key = Some(ssh_key.to_string());
         self
     }
 }
