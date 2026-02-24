@@ -50,6 +50,7 @@ secret!(CLOUDFLARE_API_TOKEN);
 secret!(CLOUDFLARE_ACCOUNT_ID);
 secret!(DOCS_AMPLITUDE_API_KEY);
 secret!(DOCS_CONSENT_IO_INSTANCE);
+secret!(FORK_DEPLOY_KEY);
 
 // todo(ci) make these secrets too...
 var!(AZURE_SIGNING_ACCOUNT_NAME);

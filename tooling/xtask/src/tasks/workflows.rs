@@ -21,6 +21,7 @@ mod extension_bump;
 mod extension_tests;
 mod extension_workflow_rollout;
 mod extensions;
+mod fork_sync_with_remote;
 mod nix_build;
 mod publish_extension_cli;
 mod release_nightly;
@@ -236,6 +237,7 @@ pub fn run_workflows(args: GenerateWorkflowArgs) -> Result<()> {
         WorkflowFile::zed(extension_workflow_rollout::extension_workflow_rollout),
         WorkflowFile::zed(nix_build::nix_build),
         WorkflowFile::zed(publish_extension_cli::publish_extension_cli),
+        WorkflowFile::zed(fork_sync_with_remote::sync_with_remote),
         WorkflowFile::zed(release::release),
         WorkflowFile::zed(release_nightly::release_nightly),
         WorkflowFile::zed(run_bundling::run_bundling),

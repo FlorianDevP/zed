@@ -66,6 +66,7 @@ pub(crate) struct CheckoutStep {
     fetch_tags: bool,
     name: Option<String>,
     token: Option<String>,
+    ssh_key: Option<String>,
     path: Option<String>,
     repository: Option<String>,
     ref_: Option<String>,
@@ -114,6 +115,11 @@ impl CheckoutStep {
 
     pub fn with_fetch_tags(mut self) -> Self {
         self.fetch_tags = true;
+        self
+    }
+
+    pub fn with_ssh_key(mut self, ssh_key: impl ToString) -> Self {
+        self.ssh_key = Some(ssh_key.to_string());
         self
     }
 }
