@@ -233,6 +233,7 @@ members = [
     "crates/zlog_settings",
     "crates/ztracing",
     "crates/ztracing_macro",
+    "crates/status_clock",
 
     #
     # Extensions
@@ -490,6 +491,7 @@ zlog = { path = "crates/zlog" }
 zlog_settings = { path = "crates/zlog_settings" }
 ztracing = { path = "crates/ztracing" }
 ztracing_macro = { path = "crates/ztracing_macro" }
+status_clock = { path = "crates/status_clock" }
 
 #
 # External crates

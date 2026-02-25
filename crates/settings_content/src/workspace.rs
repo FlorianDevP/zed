@@ -460,6 +460,50 @@ pub struct TabBarSettingsContent {
     pub show_pinned_tabs_in_separate_row: Option<bool>,
 }
 
+#[derive(
+    Copy,
+    Clone,
+    PartialEq,
+    Eq,
+    Default,
+    Serialize,
+    Deserialize,
+    JsonSchema,
+    MergeFrom,
+    Debug,
+    strum::VariantArray,
+    strum::VariantNames,
+)]
+#[serde(rename_all = "snake_case")]
+pub enum ClockLocation {
+    /// Show in the TitleBar.
+    TitleBar,
+    /// Show in the StatusBar.
+    #[default]
+    StatusBar,
+}
+
+#[with_fallible_options]
+#[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq, Eq)]
+pub struct ClockSettingsContent {
+    /// Whether to show the clock.
+    ///
+    /// Default: false
+    pub show: Option<bool>,
+    /// Where to display the clock.
+    ///
+    /// Default: StatusBar
+    pub position: Option<ClockLocation>,
+    /// Whether to display hours using a 12 or 24-hour clock.
+    ///
+    /// Default: false
+    pub use_12_hour_clock: Option<bool>,
+    /// Offset of the clock from Utc. Example: -2:00
+    ///
+    /// Default: "" -> local system offset
+    pub offset: Option<String>,
+}
+
 #[with_fallible_options]
 #[derive(Clone, Default, Serialize, Deserialize, JsonSchema, MergeFrom, Debug, PartialEq, Eq)]
 pub struct StatusBarSettingsContent {

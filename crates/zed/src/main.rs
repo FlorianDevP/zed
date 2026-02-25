@@ -775,6 +775,7 @@ fn main() {
         which_key::init(cx);
         #[cfg(target_os = "windows")]
         etw_tracing::init(cx);
+        status_clock::init(cx);
 
         cx.observe_global::<SettingsStore>({
             let http = app_state.client.http_client();

@@ -224,6 +224,7 @@ zed_actions.workspace = true
 zed_env_vars.workspace = true
 zlog.workspace = true
 zlog_settings.workspace = true
+status_clock.workspace = true
 
 [target.'cfg(target_os = "windows")'.dependencies]
 etw_tracing.workspace = true
