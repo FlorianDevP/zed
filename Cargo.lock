@@ -16986,6 +16986,7 @@ dependencies = [
  "zed_actions",
 ]
 
+[[package]]
 name = "streaming-iterator"
 version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"

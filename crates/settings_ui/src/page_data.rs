@@ -3974,7 +3974,7 @@ fn window_and_layout_page() -> SettingsPage {
                 field: Box::new(SettingField {
                     json_path: Some("clock.show"),
                     pick: |settings_content| settings_content.clock.as_ref()?.show.as_ref(),
-                    write: |settings_content, value| {
+                    write: |settings_content, value, _| {
                         settings_content.clock.get_or_insert_default().show = value;
                     },
                 }),
@@ -3987,7 +3987,7 @@ fn window_and_layout_page() -> SettingsPage {
                 field: Box::new(SettingField {
                     json_path: Some("clock.position"),
                     pick: |settings_content| settings_content.clock.as_ref()?.position.as_ref(),
-                    write: |settings_content, value| {
+                    write: |settings_content, value, _| {
                         settings_content.clock.get_or_insert_default().position = value;
                     },
                 }),
@@ -4002,7 +4002,7 @@ fn window_and_layout_page() -> SettingsPage {
                     pick: |settings_content| {
                         settings_content.clock.as_ref()?.use_12_hour_clock.as_ref()
                     },
-                    write: |settings_content, value| {
+                    write: |settings_content, value, _| {
                         settings_content
                             .clock
                             .get_or_insert_default()
@@ -4018,7 +4018,7 @@ fn window_and_layout_page() -> SettingsPage {
                 field: Box::new(SettingField {
                     json_path: Some("clock.offset"),
                     pick: |settings_content| settings_content.clock.as_ref()?.offset.as_ref(),
-                    write: |settings_content, value| {
+                    write: |settings_content, value, _| {
                         settings_content.clock.get_or_insert_default().offset = value;
                     },
                 }),
