@@ -6,7 +6,7 @@ use settings::{ClockLocation, Settings};
 use time::{OffsetDateTime, UtcOffset};
 use ui::{App, Context, IntoElement, ParentElement, Render, Window, div};
 use util::ResultExt;
-use workspace::{StatusItemView, Workspace, item::ItemHandle};
+use workspace::{StatusItemView, HideStatusItem, Workspace, item::ItemHandle};
 
 pub use clock_settings::ClockSettings;
 
@@ -89,7 +89,7 @@ impl Render for Clock {
                     if let Some(workspace) = self.workspace.upgrade() {
                         workspace.update(cx, |workspace, cx| {
                             workspace.show_error(
-                                &format!("Wrong UTC offset format. Example: +0:00 {error}"),
+                                format!("Wrong UTC offset format. Example: +0:00 {error}"),
                                 cx,
                             );
                         })
@@ -129,4 +129,6 @@ impl StatusItemView for Clock {
         _cx: &mut Context<Self>,
     ) {
     }
+
+    fn hide_setting(&self, _: &App) -> std::option::Option<HideStatusItem> { None }
 }
